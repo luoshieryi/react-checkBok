@@ -4,14 +4,14 @@ import  '../MultiCheck.css';
 import {Option} from "../MultiCheck";
 
 type Props = {
-    option: string,
+    option: Option,
 }
 
 const Item: FC<Props> = (props): JSX.Element => {
 
     return (
         <div className='item'>
-
+            123
         </div>
     )
 }

@@ -16,26 +16,26 @@ const Form: FC<Props> = (props): JSX.Element => {
     const lists = () => {
         const columns = props.columns? props.columns : 1;
         const length = props.options.length;
-        const raws = length / columns;
+        const raws = Math.floor(length / columns);
         const overflow = length % columns;
         let rawNum: number[] = [];
         for (let i = 0; i < columns; i++) {
             rawNum[i] = raws * i;
         }
         rawNum[columns] = length;
-        for (let i = 0; i < overflow; i++) {
+        for (let i = 1; i <= overflow; i++) {
             rawNum[i]++;
         }
-        let res: JSX.Element[] = []
+        console.log(rawNum);
+        let res: JSX.Element[] = [];
         for (let i = 0; i < columns; i++) {
-            res.push(<List options={props.options.slice(rawNum[i], rawNum[i+1])} key={Math.random()} />);
+            res.push(<List options={props.options.slice(rawNum[i], rawNum[i+1])} key={i} />);
         }
         return res
     }
 
     return (
-        <form className='form'>
-            abc
+        <form className='form' key={Math.random()}>
             {lists()}
         </form>
     )

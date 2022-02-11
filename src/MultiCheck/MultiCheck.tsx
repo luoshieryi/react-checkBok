@@ -35,13 +35,6 @@ export const MultiCheck: FC<Props> = (props): JSX.Element => {
 
     return (
         <div className='MultiCheck'>
-            {() => {
-                for (let i in props.options) {
-                    for (let j = 1; j <= 4; j++){
-                        <div> 123</div>
-                    }
-                }
-            }}
             <Title label={props.label}/>
             <Form options={props.options} columns={props.columns} values={props.values} onChange={props.onChange} />
         </div>
