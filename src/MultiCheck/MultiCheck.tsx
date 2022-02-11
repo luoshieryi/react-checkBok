@@ -1,7 +1,7 @@
 import './MultiCheck.css';
+import Label from './component/Label';
 
-import React from 'react';
-import {FC} from 'react';
+import React, {FC} from 'react';
 
 export type Option = {
     label: string,
@@ -33,7 +33,13 @@ type Props = {
 export const MultiCheck: FC<Props> = (props): JSX.Element => {
     return (
         <div className='MultiCheck'>
-            <div>select all</div>
+            <Label label={props.label}/>
+            <div className='box'>
+                box
+                <br/>
+                box
+                box
+            </div>
         </div>
     )
 }

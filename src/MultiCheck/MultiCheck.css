@@ -1,3 +1,22 @@
 /* TODO */
 .MultiCheck {
+    display: inline-block;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+}
+
+.label {
+    background-color: lightgray;
+    padding: 3px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.box {
+    background-color: white;
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid gray;
+    border-radius: 6px;
+    display: flex;
 }
