@@ -1,13 +1,12 @@
 import React, {FC} from 'react';
 
-//@ts-ignore
 import  '../MultiCheck.css';
 
 type Props = {
     label?: string
 }
 
-const Item: FC<Props> = (props): JSX.Element => {
+const Title: FC<Props> = (props): JSX.Element => {
     return (
         <div className='label'>
             {props.label}
@@ -15,4 +14,4 @@ const Item: FC<Props> = (props): JSX.Element => {
     )
 }
 
-export default Item
+export default Title

@@ -12,11 +12,19 @@
     font-weight: bold;
 }
 
-.box {
+.form {
     background-color: white;
     margin: 5px;
     padding: 5px;
     border: 1px solid gray;
     border-radius: 6px;
     display: flex;
+}
+
+.list {
+
+}
+
+.item {
+
 }
