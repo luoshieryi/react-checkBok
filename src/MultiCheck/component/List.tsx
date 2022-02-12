@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, MouseEvent} from 'react';
 
 import  '../MultiCheck.css';
 import {Option} from "../MultiCheck";
@@ -7,6 +7,7 @@ import {CheckBox} from "./Form";
 
 type Props = {
     options: Option[],
+    inputOnClick: (event: MouseEvent<HTMLInputElement>) => void
     checkBoxes?: CheckBox[],
     onChange?: (value: string) => void,
 }
@@ -18,6 +19,7 @@ const List: FC<Props> = (props): JSX.Element => {
             props.options.map((option, index) => (
                 <Item option={option}
                       key={option.value}
+                      onClick={props.inputOnClick}
                       checked={props.checkBoxes && props.checkBoxes[index].checked}
                       onChange={props.onChange}/>
             ))

@@ -8,8 +8,8 @@ specifiers:
   css-loader: 3.2.0
   html-webpack-plugin: 3.2.0
   jest: 25.1.0
-  react: ^17.0.2
-  react-dom: ^17.0.2
+  react: 17.0.2
+  react-dom: 17.0.2
   scss: ^0.2.4
   source-map-loader: 0.2.4
   style-loader: 1.0.0

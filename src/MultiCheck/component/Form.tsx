@@ -1,6 +1,6 @@
-import React, {FC, FormEvent, useEffect, useState} from 'react';
+import React, {FC, FormEvent,MouseEvent, useEffect, useRef, useState} from 'react';
 
-import  '../MultiCheck.css';
+import '../MultiCheck.css';
 import {Option} from '../MultiCheck';
 import List from "./List";
 
@@ -23,39 +23,85 @@ const Form: FC<Props> = (props): JSX.Element => {
     useEffect(() => {
         if (props.values) {
             const newBoxes: CheckBox[] = props.options.map((option) => {
-                    if (props.values && props.values.indexOf(option.value) > -1) {
-                        return {
-                            option: option,
-                            checked: true,
-                        };
-                    } else {
-                        return {
-                            option: option,
-                            checked: false
-                        };
-                    }
+                if (props.values && props.values.indexOf(option.value) > -1) {
+                    return {
+                        option: option,
+                        checked: true,
+                    };
+                } else {
+                    return {
+                        option: option,
+                        checked: false
+                    };
+                }
             });
             setCheckBoxes(newBoxes);
         }
     }, [])
 
-    const submitHandle = (e: FormEvent) => {
-        if (props.onChange && checkBoxes) {
-            let options: Option[] = [];
-            checkBoxes.map((box) => {
-                if (box.checked) {
-                    options.push(box.option);
-                }
-            })
-            props.onChange(options);
+
+    const formElement = useRef<HTMLFormElement>(null)
+    const selectAllElement = useRef<HTMLInputElement>(null)
+
+    const checkAll = (event: MouseEvent<HTMLInputElement>) => {
+        if (formElement.current) {
+            let inputs = formElement.current.getElementsByTagName('input');
+            for (let input of inputs) {
+                input.checked = event.currentTarget.checked;
+            }
+            if (props.values) {
+                const newBoxes = checkBoxes;
+                newBoxes?.map((box) => {
+                    box.checked = event.currentTarget.checked;
+                });
+                setCheckBoxes(newBoxes);
+            }
         }
-        e.preventDefault();
     }
 
-    let onChange: ((value: string) => void) | undefined = undefined
+    const inputOnClick = (event: MouseEvent<HTMLInputElement>) => {
+        // console.log('inputOnClick')
+        if (selectAllElement.current)
+            // console.log('selectAll.current')
+            if (formElement.current && selectAllElement.current) {
+                if (!event.currentTarget.checked) {
+                    console.log('!checked')
+                    selectAllElement.current.checked = false;
+                } else {
+                    console.log('checked')
+                    const inputs = formElement.current.getElementsByTagName('input');
+                    let checked = true;
+                    console.log(inputs)
+                    for (let input of inputs) {
+                        if (input.className !== 'selectAll' && !input.checked) {
+                            console.log('false')
+                            checked = false;
+                        }
+                    }
+                    selectAllElement.current.checked = checked;
+                }
+            }
+    }
 
+    let submitHandle: ((e: FormEvent) => void) | undefined = undefined
+    if (props.onChange) {
+        submitHandle = (e: FormEvent) => {
+            if (props.onChange && checkBoxes) {
+                let options: Option[] = [];
+                checkBoxes.map((box) => {
+                    if (box.checked) {
+                        options.push(box.option);
+                    }
+                })
+                props.onChange(options);
+            }
+            e.preventDefault();
+        }
+    }
+
+    let inputOnChange: ((value: string) => void) | undefined = undefined
     if (props.values) {
-        onChange = (value: string) => {
+        inputOnChange = (value: string) => {
             let newBoxes = checkBoxes?.map((box) => {
                 if (box.option.value === value) {
                     box.checked = !box.checked;
@@ -67,7 +113,7 @@ const Form: FC<Props> = (props): JSX.Element => {
     }
 
     const lists = () => {
-        const columns = props.columns? props.columns : 1;
+        const columns = props.columns ? props.columns : 1;
         const length = props.options.length;
         const raws = Math.floor(length / columns);
         const overflow = length % columns;
@@ -82,18 +128,25 @@ const Form: FC<Props> = (props): JSX.Element => {
         let res: JSX.Element[] = [];
         for (let i = 0; i < columns; i++) {
             res.push(<List key={Math.random()}
-                           options={props.options.slice(rawNum[i], rawNum[i+1])}
-                           checkBoxes={checkBoxes?.slice(rawNum[i], rawNum[i+1])}
-                           onChange={onChange}/>);
+                           options={props.options.slice(rawNum[i], rawNum[i + 1])}
+                           inputOnClick={inputOnClick}
+                           checkBoxes={checkBoxes?.slice(rawNum[i], rawNum[i + 1])}
+                           onChange={inputOnChange}/>);
         }
         return res
     }
 
     return (
         <div>
-            <form key={'checkboxForm'} className='form' onSubmit={submitHandle}  action=''>
+            <form key={'checkboxForm'} className='form' onSubmit={submitHandle} ref={formElement}>
                 {lists()}
-                <input type='submit' value='提交'/>
+                <div className='list'>
+                    <label>
+                        <input type='checkbox' className='selectAll' ref={selectAllElement} onClick={checkAll}/>
+                        selectAll
+                    </label>
+                    <button type='submit'>submit</button>
+                </div>
             </form>
         </div>
     )
