@@ -1,4 +1,4 @@
-import React, {FC, FormEvent,MouseEvent, useEffect, useRef, useState} from 'react';
+import React, {ChangeEvent, FC, FormEvent, MouseEvent, useEffect, useRef, useState} from 'react';
 
 import '../MultiCheck.css';
 import {Option} from '../MultiCheck';
@@ -60,9 +60,6 @@ const Form: FC<Props> = (props): JSX.Element => {
     }
 
     const inputOnClick = (event: MouseEvent<HTMLInputElement>) => {
-        // console.log('inputOnClick')
-        if (selectAllElement.current)
-            // console.log('selectAll.current')
             if (formElement.current && selectAllElement.current) {
                 if (!event.currentTarget.checked) {
                     console.log('!checked')
@@ -99,11 +96,11 @@ const Form: FC<Props> = (props): JSX.Element => {
         }
     }
 
-    let inputOnChange: ((value: string) => void) | undefined = undefined
+    let inputOnChange: ((event: ChangeEvent<HTMLInputElement>) => void) | undefined = undefined
     if (props.values) {
-        inputOnChange = (value: string) => {
+        inputOnChange = (event: ChangeEvent<HTMLInputElement>) => {
             let newBoxes = checkBoxes?.map((box) => {
-                if (box.option.value === value) {
+                if (box.option.value === event.currentTarget.value) {
                     box.checked = !box.checked;
                 }
                 return box;
@@ -123,9 +120,12 @@ const Form: FC<Props> = (props): JSX.Element => {
         }
         rawNum[columns] = length;
         for (let i = 1; i <= overflow; i++) {
-            rawNum[i]++;
+            rawNum[i] += i;
         }
         let res: JSX.Element[] = [];
+        console.log(columns)
+        console.log(length)
+        console.log(overflow)
         for (let i = 0; i < columns; i++) {
             res.push(<List key={Math.random()}
                            options={props.options.slice(rawNum[i], rawNum[i + 1])}
@@ -150,10 +150,6 @@ const Form: FC<Props> = (props): JSX.Element => {
             </form>
         </div>
     )
-}
-
-Form.defaultProps = {
-    columns: 1
 }
 
 export default Form

@@ -1,4 +1,4 @@
-import React, {FC, MouseEvent} from 'react';
+import React, {ChangeEvent, FC, MouseEvent} from 'react';
 
 import  '../MultiCheck.css';
 import {Option} from "../MultiCheck";
@@ -9,7 +9,7 @@ type Props = {
     options: Option[],
     inputOnClick: (event: MouseEvent<HTMLInputElement>) => void
     checkBoxes?: CheckBox[],
-    onChange?: (value: string) => void,
+    onChange?: (event: ChangeEvent<HTMLInputElement>) => void,
 }
 
 const List: FC<Props> = (props): JSX.Element => {
