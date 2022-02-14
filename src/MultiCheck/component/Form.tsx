@@ -22,7 +22,6 @@ const Form: FC<Props> = (props): JSX.Element => {
 
     useEffect(() => {
         if (props.values) {
-            console.log("checkbox");
             const newBoxes: CheckBox[] = props.options.map((option) => {
                 if (props.values && props.values.indexOf(option.value) > -1) {
                     return {
@@ -55,31 +54,31 @@ const Form: FC<Props> = (props): JSX.Element => {
                 newBoxes?.forEach((box) => {
                     box.checked = event.currentTarget.checked;
                 });
-                console.log(newBoxes);
+
                 setCheckBoxes(newBoxes);
             }
         }
     }
 
     const inputOnClick = (event: MouseEvent<HTMLInputElement>) => {
-            if (formElement.current && selectAllElement.current) {
-                if (!event.currentTarget.checked) {
-                    console.log('!checked')
-                    selectAllElement.current.checked = false;
-                } else {
-                    console.log('checked')
-                    const inputs = formElement.current.getElementsByTagName('input');
-                    let checked = true;
-                    console.log(inputs)
-                    for (let i = 0; i < inputs.length; i++) {
-                        if (inputs[i].className !== 'selectAll' && !inputs[i].checked) {
-                            console.log('false')
-                            checked = false;
-                        }
+        if (formElement.current && selectAllElement.current) {
+            if (!event.currentTarget.checked) {
+
+                selectAllElement.current.checked = false;
+            } else {
+
+                const inputs = formElement.current.getElementsByTagName('input');
+                let checked = true;
+
+                for (let i = 0; i < inputs.length; i++) {
+                    if (inputs[i].className !== 'selectAll' && !inputs[i].checked) {
+
+                        checked = false;
                     }
-                    selectAllElement.current.checked = checked;
                 }
+                selectAllElement.current.checked = checked;
             }
+        }
     }
 
     let submitHandle: ((e: FormEvent) => void) | undefined = undefined
