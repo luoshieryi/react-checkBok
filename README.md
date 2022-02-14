@@ -1,46 +1,90 @@
-# Getting Started with Create React App
+TypeScript React Multi-Check Testing Program
+============================================
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Code Interview Process 
 
-## Available Scripts
+Please follow the task requirements, the component style should be matched the screenshot.
 
-In the project directory, you can run:
+You have seven days to do it.
 
-### `npm start`
+- Create a new branch based on master instead of fork.
+- [Create the PR](../../pulls) when you finished.
+- Please communicate in English. Do not use Chinese in your Code, especially code and commits' comments.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+If you have any questions, please feel free to [raise the issue](../../issues) in the repo. We're glad to help you.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Please let me know when your PR's ready for review.
 
-### `npm test`
+## Notice:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This is a simplified component from real project.
+When you do it, consider it as a real task, and show your best programming practices.
+Your code will be reviewed and scored by the other developers of the team you will join.
 
-### `npm run build`
+Your code will have higher score if:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. You split the task into smaller tasks, complete them one by one, and commit them in different git commits with proper commit messages 
+1. The code is clean and easy to read and understand
+2. The variable and function names are considered carefully
+3. Small and meaningful functions for complex logic
+4. No typo and has good code format
+5. Meaningful, carefully organized test cases covered most of the important functionality (very important)
+6. Provide proper/valuable comments, but only when it's necessary (in code and/or in github PR). Try improving the code to avoid un-necessary comments. 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Task
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Implement a react function component with typescript.
 
-### `npm run eject`
+1. typescript + react
+2. unit tests: use `jest` + `@testing-library/react`, etc.
+3. provide proper comments in code (and only when it's necessary) 
+4. show your best practise
+5. use github pull request to submit your code
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Find `TODO` in code to implement, you can also change any code in codebase to make it better.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Component Requirement:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+![demo](./images/demo.png)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+1. The component has a label
+2. The special `Select All` option
+   1. if checked, all other options are checked
+   2. if unchecked, all other options are unchecked
+   3. if all other options are checked, it should be checked
+   4. if any other option are unchecked, it should be unchecked
+3. The options support multiple-columns, and the direction is from top to bottom in each column
 
-## Learn More
+### The layout example
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+If the options are `['aaa', 'bbb', 'ccc', 'ddd', 'eee']` and the columns is `4`, the layout should be
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+Select All   bbb      ddd     eee
+aaa          ccc
+```
+
+Make the column sizes as even as possible, and put extra options in the first several columns, and also make them even.
+
+### Performance requirement
+
+You can add proper react hooks in the component to avoid unnecessary component-level renders if no state changes
+
+## Dev
+
+```
+npm install
+npm run dev
+```
+
+## Test
+
+```
+npm test
+```
+
+Notice:
+1. Please use html native checkbox (`<input type="checkbox" />`) as the base,
+   the style doesn't need to be exactly the same
+2. No need to test `App.tsx`, only test MultiCheck and related components and code
+4. Please follow the best Typescript style and best practices
