@@ -19,6 +19,8 @@ type Props = {
 const Form: FC<Props> = (props): JSX.Element => {
 
     const [checkBoxes, setCheckBoxes] = useState<CheckBox[]>();
+    const formElement = useRef<HTMLFormElement>(null)
+    const selectAllElement = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
         if (props.values) {
@@ -39,10 +41,6 @@ const Form: FC<Props> = (props): JSX.Element => {
         }
     }, [])
 
-
-    const formElement = useRef<HTMLFormElement>(null)
-    const selectAllElement = useRef<HTMLInputElement>(null)
-
     const checkAll = (event: MouseEvent<HTMLInputElement>) => {
         if (formElement.current) {
             let inputs = formElement.current.getElementsByTagName('input');
@@ -60,46 +58,51 @@ const Form: FC<Props> = (props): JSX.Element => {
         }
     }
 
-    const inputOnClick = (event: MouseEvent<HTMLInputElement>) => {
+    const submitHandle = !props.onChange ? undefined : (e: FormEvent) => {
+        if (props.onChange && checkBoxes) {
+            let options: Option[] = [];
+            checkBoxes.forEach((box) => {
+                if (box.checked) {
+                    options.push(box.option);
+                }
+            })
+            props.onChange(options);
+        }
+        e.preventDefault();
+    }
+
+    // let submitHandle: ((e: FormEvent) => void) | undefined = undefined
+    // if (props.onChange) {
+    //     submitHandle = (e: FormEvent) => {
+    //         if (props.onChange && checkBoxes) {
+    //             let options: Option[] = [];
+    //             checkBoxes.forEach((box) => {
+    //                 if (box.checked) {
+    //                     options.push(box.option);
+    //                 }
+    //             })
+    //             props.onChange(options);
+    //         }
+    //         e.preventDefault();
+    //     }
+    // }
+
+    const inputOnChange = (event: ChangeEvent<HTMLInputElement>) =>  {
         if (formElement.current && selectAllElement.current) {
             if (!event.currentTarget.checked) {
-
                 selectAllElement.current.checked = false;
             } else {
-
                 const inputs = formElement.current.getElementsByTagName('input');
                 let checked = true;
-
                 for (let i = 0; i < inputs.length; i++) {
                     if (inputs[i].className !== 'selectAll' && !inputs[i].checked) {
-
                         checked = false;
                     }
                 }
                 selectAllElement.current.checked = checked;
             }
         }
-    }
-
-    let submitHandle: ((e: FormEvent) => void) | undefined = undefined
-    if (props.onChange) {
-        submitHandle = (e: FormEvent) => {
-            if (props.onChange && checkBoxes) {
-                let options: Option[] = [];
-                checkBoxes.forEach((box) => {
-                    if (box.checked) {
-                        options.push(box.option);
-                    }
-                })
-                props.onChange(options);
-            }
-            e.preventDefault();
-        }
-    }
-
-    let inputOnChange: ((event: ChangeEvent<HTMLInputElement>) => void) | undefined = undefined
-    if (props.values) {
-        inputOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+        if (props.values) {
             let newBoxes = checkBoxes?.map((box) => {
                 if (box.option.value === event.currentTarget.value) {
                     box.checked = !box.checked;
@@ -127,9 +130,8 @@ const Form: FC<Props> = (props): JSX.Element => {
         for (let i = 0; i < columns; i++) {
             res.push(<List key={Math.random()}
                            options={props.options.slice(rawNum[i], rawNum[i + 1])}
-                           inputOnClick={inputOnClick}
                            checkBoxes={checkBoxes?.slice(rawNum[i], rawNum[i + 1])}
-                           onChange={inputOnChange}/>);
+                           checkedOnChange={inputOnChange}/>);
         }
         return res
     }

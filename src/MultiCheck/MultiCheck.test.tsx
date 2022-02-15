@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, screen} from '@testing-library/react';
+import {fireEvent, render, screen} from '@testing-library/react';
 
 import {MultiCheck, Option} from "./MultiCheck";
 
@@ -61,17 +61,17 @@ describe('MultiCheck', () => {
       );
       const checkBox = screen.getByLabelText('ggg');
       expect(checkBox).not.toBeChecked();
-      checkBox.click();
-      expect(checkBox).toBeChecked()
+      fireEvent.click(checkBox);
+      expect(screen.getByLabelText('ggg')).toBeChecked();
     });
 
     it('should the defaultOnChange() response if values and onChange provided', function () {
       render(
           <MultiCheck options={defaultOptions} values={defaultValues} onChange={defaultOnChange}/>
       );
-      screen.getByLabelText('ggg').click();
-      screen.getByLabelText('iii').click();
-      screen.getByRole('button').click();
+      fireEvent.click(screen.getByLabelText('ggg'));
+      fireEvent.click(screen.getByLabelText('iii'));
+      fireEvent.click(screen.getByRole('button'));
       expect(selectedValues).toEqual([ '333', '555', '777', '999' ]);
     });
 
@@ -79,7 +79,7 @@ describe('MultiCheck', () => {
       render(
           <MultiCheck options={defaultOptions}/>
       );
-      screen.getByLabelText('selectAll').click();
+      fireEvent.click(screen.getByLabelText('selectAll'));
       defaultOptions.map(isCheck);
       function isCheck(option: Option) {
         expect(screen.getByLabelText(option.label)).toBeChecked();
@@ -91,8 +91,8 @@ describe('MultiCheck', () => {
           <MultiCheck options={defaultOptions}/>
       );
       const selectAll = screen.getByLabelText('selectAll');
-      selectAll.click();
-      screen.getByLabelText('aaa').click();
+      fireEvent.click(selectAll);
+      fireEvent.click(screen.getByLabelText('aaa'));
       expect(selectAll).not.toBeChecked();
     });
 
@@ -102,7 +102,7 @@ describe('MultiCheck', () => {
       );
       defaultOptions.map(check);
       function check(option: Option) {
-        screen.getByLabelText(option.label).click();
+        fireEvent.click(screen.getByLabelText(option.label));
       }
       expect(screen.getByLabelText('selectAll')).toBeChecked();
     });

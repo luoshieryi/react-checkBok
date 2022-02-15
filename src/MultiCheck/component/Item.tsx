@@ -1,11 +1,10 @@
-import React, {MouseEvent, FC, ChangeEvent} from 'react';
+import React, {FC, ChangeEvent} from 'react';
 
 import  '../MultiCheck.css';
 import {Option} from "../MultiCheck";
 
 type Props = {
     option: Option,
-    onClick: (event: MouseEvent<HTMLInputElement>) => void ,
     checked?: boolean,
     onChange?: (event: ChangeEvent<HTMLInputElement>) => void,
 }
@@ -21,7 +20,8 @@ const Item: FC<Props> = (props): JSX.Element => {
                        name={props.option.label}
                        checked={props.checked}
                        onChange={props.onChange}
-                       onClick={props.onClick}/>
+                       // onClick={props.onClick}
+                />
                 {props.option.label}
                 <br/>
             </label>
