@@ -1,5 +1,5 @@
 import React from 'react';
-import {fireEvent, render, screen} from '@testing-library/react';
+import {cleanup, fireEvent, render, screen} from '@testing-library/react';
 
 import {MultiCheck, Option} from "./MultiCheck";
 
@@ -17,7 +17,6 @@ describe('MultiCheck', () => {
     {label: 'hhh', value: '888',},
     {label: 'iii', value: '999',},
   ];
-  const defaultColumns: number = 5;
   const defaultValues: string[] = [
     '333',
     '555'
@@ -38,10 +37,22 @@ describe('MultiCheck', () => {
     });
 
     it('should render the checkbox to columns if columns provided', function () {
-      render(
-          <MultiCheck options={defaultOptions} columns={defaultColumns} />
-      );
-      expect(screen.getAllByTestId('list')).toHaveLength(defaultColumns)
+      for (let i = 1; i < defaultOptions.length; i++) {
+        render(
+            <MultiCheck options={defaultOptions} columns={i} />
+        );
+        let lists = screen.getAllByTestId('list');
+        expect(lists).toHaveLength(i);
+        for (let j = 0; j < defaultOptions.length % i; j++) {
+          // eslint-disable-next-line testing-library/no-node-access
+          expect(lists[j].getElementsByClassName('item')).toHaveLength(Math.ceil(defaultOptions.length/i))
+        }
+        for (let j = defaultOptions.length % i; j < i; j++) {
+          // eslint-disable-next-line testing-library/no-node-access
+          expect(lists[j].getElementsByClassName('item')).toHaveLength(Math.floor(defaultOptions.length/i))
+        }
+        cleanup();
+      }
     });
 
     it('should render the default checked values if values provided', function () {

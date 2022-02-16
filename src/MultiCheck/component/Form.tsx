@@ -119,12 +119,16 @@ const Form: FC<Props> = (props): JSX.Element => {
         const raws = Math.floor(length / columns);
         const overflow = length % columns;
         let rawNum: number[] = [];
-        for (let i = 0; i < columns; i++) {
+        for (let i = 0; i <= columns; i++) {
             rawNum[i] = raws * i;
         }
-        rawNum[columns] = length;
-        for (let i = 1; i <= overflow; i++) {
-            rawNum[i] += i;
+        // rawNum[columns] = length;
+        for (let i = 1; i <= columns; i++) {
+            if (i <= overflow) {
+                rawNum[i] += i;
+            } else {
+                rawNum[i] += overflow
+            }
         }
         let res: JSX.Element[] = [];
         for (let i = 0; i < columns; i++) {
